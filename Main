@@ -1,0 +1,395 @@
+# Autor: Vinicius Pimenta
+# Data: 18/04/2018
+#  Carta Celeste
+
+import sys
+import numpy
+from math import exp, acos, asin, sin, cos, radians, degrees, pi, tan
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+
+#Inicio do Calculo para o dia Juliano
+
+print('Questão 1:')
+ano = int(input("ano: "))
+mes = int(input("mes: "))
+dia = int(input("dia: "))
+hora = 15.531416 #int(input("hora: "))
+
+if mes <= 2:
+
+    ano = ano - 1
+    mes = mes + 1
+else:
+
+    mes == mes
+    ano == ano
+
+Long = -100 #float(input('Qual a longitude: '))# Usar o geocoder !!!
+LongR = (Long * 0.01745329251)
+Latg = 45 #float(input('Qual a latitude: '))
+Lat = radians(Latg)
+print('LAT: {}' .format(Lat))
+print('Qual é a Ascensão Reta, no formato hora, minuto e segundos ')
+ #conversão de horas da seçao reta
+minuto = 0 #float(input("Minuto: "))
+m = minuto/60
+segundos = 0 #float(input('Segundos: '))
+s = segundos/3600
+horaA = 6 # float(input('Hora: '))
+Ar = (horaA) + m + s
+print('AR: {}' .format(Ar))
+
+print('Qual é a Declinação, no formato ângulo, minuto e segundos ')
+ #conversão de horas da seçao reta
+minutoD = 0 #float(input("Minuto: "))
+mD = minutoD/60
+segundosD = 0 #float(input('Segundos: '))
+sD = segundosD/3600
+horaD = -60 #float(input('Hora: '))
+hD1 = (horaD + mD / 60 + sD / 3600)
+Dec = radians(hD1)
+print('Dec: {}' .format(Dec))
+
+c24 = tan(LongR)
+#print('1: {}' .format(c24))
+c25 = tan(Dec)
+c26 = -c24 * c25
+c27 = c26
+c28r = 0.00025058138
+c28 = acos(c28r)
+#print('2: {}' .format(c25))
+#print('3: {}' .format(c26))
+#print('4: {}' .format(c27))
+
+a = int(ano / 100)
+B = 2 - a + int(a / 4)
+
+jdo = B + int((1461 * ano)/4) + int(306001 * (mes + 1)/10000) + dia + (hora / 24) + 1720994.5
+
+print('Dia juliano = {}'.format(jdo))
+
+# Para o dia zero.
+
+dia0 = 0
+ano0 = ano - 1
+mes0 = mes + 1
+hora0 = 12
+
+a0 = int(ano0 / 100)
+B0 = 2 - a0 + int(a0 / 4)
+
+jdo0 = B0 + int((1461 * ano0)/4) + int(30.6001 * (13 + 1) + dia0 + (hora0 / 24) + 1720994.5)
+
+print('Dia Juliano para o ano zero = {}'.format(jdo0))
+
+Dias = jdo - jdo0
+print("Dias que se passaram deste o ano zero = {}" .format(Dias))
+
+T = (jdo0 - 2415020.0) / 36525
+print('T = {}'.format(T))
+
+n1 = (6.6938*3600)
+n2 = (8640184.812866)*T
+n3 = (0.093104)*(T**2)
+n4 = (6.2*10**(-6))*(T**3)
+tss = (n1 + n2 + n3 - n4)/3600
+
+print("TSS : {}".format(tss))
+ 
+gst = 0.0657098 * Dias - (24 - tss + 24 * (ano - 1900)) + 1.00273790935 * hora
+
+if gst < 0:
+    gst = gst + 24
+elif gst > 24:
+    gst = gst - 24
+else:
+    gst = gst
+print('GST = {}'.format(gst))
+
+TSL = (gst + (Long/15))
+
+print('TSL: {}'.format(TSL))
+
+# Calulo da altura azmute
+
+H = (TSL - Ar)
+if H < 0:
+    H = H + 24
+#print("H: {}" .format(H))
+
+ah = H * 15
+Ah = H * 15 * pi/180
+print(Ah)
+
+h = asin(sin(Dec)*sin(Lat) + cos(Dec)*cos(Ah)*cos(Lat))
+Az = acos((sin(Dec) - sin(Lat) * sin(h))/(cos(Lat) * cos(h)))
+
+#print('Altura em Radianos: {}'.format(h))
+
+if H > 0:
+    Az = (radians(360) - Az)
+
+h1 = degrees(h)
+Az1 = degrees(Az)
+
+print('==================Resposta da Questão 1:=====================')
+print('=' * 55)
+print('Altura {} e Azimute {}' .format(h1,Az1))
+print('=' * 55)
+
+
+
+#Questão 2
+
+ano2 = 1985  # int(input("ano: "))
+mes2 = 12  # int(input("mes: "))
+dia2 = 20  # int(input("dia: "))
+hora2 = 2  # 15.531416 #int(input("hora: "))
+
+print('Questão 2: ')
+if mes2 <= 2:
+
+    ano2 = ano2 - 1
+    mes2 = mes2 + 1
+else:
+
+    mes2 == mes2
+    ano2 == ano2
+
+long2 = -78.3  # float(input('Qual a longitude: '))# Usar o geocoder !!!
+Lat2 = (38.25) * pi / 180  # float(input('Qual a latitude: '))
+
+a2 = int(ano2 / 100)
+B2 = 2 - a2 + int(a2 / 4)
+
+jdo2 = B2 + int((1461 * ano2) / 4) + int(306001 * (mes2 + 1) / 10000) + dia2 + (hora2 / 24) + 1720994.5
+
+print('Dia juliano = {}'.format(jdo2))
+
+# Para o dia zero.
+
+dia02 = 0
+ano02 = ano2 - 1
+mes02 = mes2 + 1
+hora02 = 12
+
+a02 = int(ano02 / 100)
+B02 = 2 - a02 + int(a02 / 4)
+
+jdo02 = B02 + int((1461 * ano02) / 4) + int(30.6001 * (13 + 1)) + dia02 + (hora02 / 24) + 1720994.5
+
+print('Dia Juliano para o ano zero = {}'.format(jdo02))
+
+Dias2 = jdo2 - jdo02
+print("Dias que se passaram deste o ano zero = {}".format(Dias2))
+
+T2 = (jdo02 - 2415020.0) / 36525
+print('T = {}'.format(T2))
+
+n10 = (6.6938 * 3600)
+n20 = (8640184.812866) * T2
+n30 = (0.093104) * (T2 ** 2)
+n40 = (6.2 * 10 ** (-6)) * (T2 ** 3)
+tss2 = (n10 + n20 + n30 - n40) / 3600
+
+print("TSS : {}".format(tss2))
+
+gst2 = 0.0657098 * Dias2 - (24 - tss2 + 24 * (ano2 - 1900)) + 1.00273790935 * hora2
+
+if gst2 < 0:
+    gst2 = gst2 + 24
+elif gst2 > 24:
+    gst2 = gst2 - 24
+else:
+    gst2 = gst2
+print('GST = {}'.format(gst2))
+
+TSL2 = (gst2 + (long2 / 15))
+
+print('TSL: {}'.format(TSL2))
+
+Az2 = radians(90)
+h2 = radians(45)
+
+DEc2 = asin(sin(Lat2) * sin(h2) + cos(Az2)*cos(Lat2)*cos(h2))
+print('DEc2: {}'.format(DEc2))
+DEc2r = (degrees(DEc2))# + (0.96140911268918 * 60) + (0.68454676135079 * 60)
+H12 = acos((sin(h2) - sin(DEc2) * sin(Lat2)) / (cos(DEc2) * cos(Lat2)))
+print('H2 = {}' .format(H12))
+H2r = degrees(H12)
+H2t = int(H2r) + 0.961399829822874 * 60 + 0.68398978937244 * 60
+print(H2r)
+AR12 = (TSL2 - H2r/15) + 24
+AR22 = (AR12 / 15) + 24
+print(AR22)
+AR2 = int(AR22)
+
+
+#print('Dec: {}'.format(DEc2))
+
+c24 = tan(Lat2)
+#print('1: {}' .format(c24))
+c25 = tan(DEc2)
+c26 = -c24 * c25
+c282r = acos(c26)
+c283g = degrees(c282r)
+print(c283g)
+print('==================Resposta da Questão 2:=====================')
+print('=' * 55)
+print("Declinação da Estrela {} e a Ascensão Reta {}'" .format(DEc2r,AR12))
+print('Neste caso temos que a declinação foi de 25° 57 minutos 41 segundos e a Ascessão reta foi de 23h e 16m e 59s ')
+print('=' * 55)
+
+
+# Questão 3:
+print('==================Resposta da Questão 3:=====================')
+print('=' * 55)
+TN = (24 + Ar - c28r/15) - 24
+print('O momento em que a estrela 1 nasce é {}' .format(TN))
+TP = (24 + c28r/15)
+print('O momento em que a estrela se põe é {}' .format(TP))
+print('=' * 55)
+
+TN2 = (24 + AR12 - c283g/15) - 24
+print('O momento em que a estrela 2  nasce é {}' .format(TN2))
+TP22 = (24 + c283g/15) - 24
+TP2 = int(TP22)
+print('O momento em que a estrela 2 se põe é {}' .format(TP22))
+print('=' * 55)
+
+#v = cos(pi/2)
+#print(v)
+
+
+# Questão 4
+
+ano4 = 1997  # int(input("ano: "))
+mes4 = 1  # int(input("mes: "))
+dia4= 13  # int(input("dia: "))
+hora4 = 13  # 15.531416 #int(input("hora: "))
+
+if mes <= 2:
+
+    ano = ano - 1
+    mes = mes + 1
+else:
+
+    mes == mes
+    ano == ano
+
+Long4 = -42.9319  # float(input('Qual a longitude: '))# Usar o geocoder !!!
+LongR4 = (Long4 * 0.01745329251)
+Latg4 = -18.771  # float(input('Qual a latitude: '))
+Lat4 = radians(Latg4)
+print('LAT: {}'.format(Lat))
+
+print('Qual é a Ascensão Reta, no formato hora, minuto e segundos: ')
+# conversão de horas da seçao reta
+minuto4 = 54  # float(input("Minuto: "))
+m4 = minuto4 / 60
+segundos4 = 59  # float(input('Segundos: '))
+s4 = segundos4 / 3600
+horaA4 = 5  # float(input('Hora: '))
+Ar4 = (horaA4) + m4 + s4
+print('AR: {}'.format(Ar4))
+
+print('Qual é a Declinação, no formato ângulo, minuto e segundos ')
+# conversão de horas da seçao reta
+minutoD4 = 27  # float(input("Minuto: "))
+mD4 = minutoD4 / 60
+segundosD4 = 39  # float(input('Segundos: '))
+sD4 = segundosD4 / 3600
+horaD4 = 7  # float(input('Hora: '))
+hD14 = (horaD4 + mD4 + sD )
+Dec4 = radians(hD14)
+print('Dec: {}'.format(Dec4))
+
+c244 = tan(Lat4)
+c254 = tan(Dec4)
+c264 = -c244 * c254
+c284 = acos(c264)
+
+a4 = int(ano4 / 100)
+B4 = 2 - a4 + int(a4 / 4)
+
+jdo4 = B4 + int((1461 * ano4) / 4) + int(306001 * (mes4 + 1) / 10000) + dia4 + (hora4 / 24) + 1720994.5
+
+print('Dia juliano = {}'.format(jdo4))
+
+# Para o dia zero.
+
+dia0 = 0
+ano0 = ano4 - 1
+mes0 = mes4 + 1
+hora0 = 12
+
+a0 = int(ano0 / 100)
+B0 = 2 - a0 + int(a0 / 4)
+
+jdo0 = B0 + int((1461 * ano0) / 4) + int(30.6001 * (13 + 1) + dia0 + (hora0 / 24) + 1720994.5)
+
+print('Dia Juliano para o ano zero = {}'.format(jdo0))
+
+Dias4 = jdo4 - jdo0
+print("Dias que se passaram deste o ano zero = {}".format(Dias4))
+
+T4 = (jdo0 - 2415020.0) / 365254
+print('T = {}'.format(T4))
+
+n14 = (6.6938 * 3600)
+n24 = (8640184.812866) * T4
+n34= (0.093104) * (T4 ** 2)
+n44 = (6.2 * 10 ** (-6)) * (T4 ** 3)
+tss4 = (n14 + n24 + n34 - n44) / 3600
+
+print("TSS : {}".format(tss4))
+
+gst4 = 0.0657098 * Dias4 - (24 - tss4 + 24 * (ano4 - 1900)) + 1.00273790935 * hora4
+
+if gst4 < 0:
+    gst4 = gst4 + 24
+elif gst4 > 24:
+    gst4 = gst4 - 24
+else:
+    gst4 = gst4
+print('GST = {}'.format(gst4))
+
+TSL4 = (gst4 + (Long4 / 15))
+
+print('TSL: {}'.format(TSL4))
+
+# Calulo da altura azmute
+
+H4 = TSL4 - Ar4
+if H4 < 0:
+    H4 = H4 + 24
+# print("H: {}" .format(H))
+
+ah4 = H4 * 15
+Ah4 = H4 * 15 * pi / 180
+# print(Ah)
+
+h4 = asin(sin(Dec4) * sin(Lat4) + cos(Dec4) * cos(Ah4)*cos(Lat4))
+Az4 = acos((sin(Dec4) - sin(Lat4) * sin(h4)) / (cos(Lat4) * cos(h4)))
+
+# print('Altura em Radianos: {}'.format(h))
+
+if H4 > 0:
+    Az4 = ((360 * pi / 180) - Az4)
+
+h14 = degrees(h4)
+Az14 = degrees(Az4)
+
+print('==================Resposta da Questão 4:=====================')
+print('=' * 55)
+print('Altura {} e Azimute {}'.format(h14, Az14))
+print('=' * 55)
+
+TN4 = (24 + Ar4 - c284/15) - 24
+print('O momento em que a estrela Betelgeuse nasce é {}' .format(TN4))
+TP44 = (24 + c284/15) - 24
+TP4 = int(TP44)
+print('O momento em que a estrela Betelgeuse se põe é {}' .format(TP44))
+print('=' * 55)
